@@ -92,3 +92,4 @@ export interface ActionSuggestion {
   contactMethod: 'phone' | 'email' | 'whatsapp';
   contactTarget: string;
 }
+
