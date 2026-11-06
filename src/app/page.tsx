@@ -4,14 +4,15 @@ import React, { useState, useMemo } from 'react';
 import { 
   AlertTriangle, CheckCircle, Clock, DollarSign, FileText, Phone, 
   Send, Upload, Users, Video, Search, ChevronRight, X, ShieldAlert, 
-  Sparkles, ArrowUpRight, BarChart3, RefreshCw, MessageSquare, AlertCircle
+  Sparkles, ArrowUpRight, BarChart3, RefreshCw, MessageSquare, AlertCircle,
+  TrendingUp, Radio, ExternalLink, Copy, Check, Filter
 } from 'lucide-react';
 import { 
   initialClients, initialBookings, initialInvoices, 
-  initialPayments, initialVideos, initialLeads, initialAnswers, rawInitialMessages 
+  initialPayments, initialVideos, initialLeads, initialAnswers 
 } from '../lib/initialData';
 import { Client, Booking, Invoice, VideoItem, Lead, ActionSuggestion } from '../lib/types';
-import { parseCSVFile, parseMessagesText } from '../lib/parser';
+import { parseCSVFile } from '../lib/parser';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'priorities' | 'clients' | 'finance' | 'production' | 'pipeline' | 'jev'>('priorities');
@@ -31,16 +32,13 @@ export default function Dashboard() {
   const [activeSuggestion, setActiveSuggestion] = useState<ActionSuggestion | null>(null);
   const [draftMessage, setDraftMessage] = useState('');
   const [actionSuccessMessage, setActionSuccessMessage] = useState('');
+  const [copied, setCopied] = useState(false);
 
   // Jev Interactive state
   const [customJevMessage, setCustomJevMessage] = useState('Can you cut the first 3 seconds of the video? It starts way too slow.');
   const [jevResult, setJevResult] = useState<any>(null);
 
-  // Derived calculations
-  const overdueInvoices = useMemo(() => {
-    return initialAnswers.overdue;
-  }, []);
-
+  const overdueInvoices = useMemo(() => initialAnswers.overdue, []);
   const totalOverdue = initialAnswers.overdue_total;
   const neverBilledTotal = initialAnswers.never_billed_total;
   const weOweTotal = initialAnswers.we_owe[0]?.amount || 900;
@@ -62,6 +60,7 @@ export default function Dashboard() {
     setActiveSuggestion(suggestion);
     setDraftMessage(suggestion.draftText);
     setActionSuccessMessage('');
+    setCopied(false);
   };
 
   // Simulate file upload
@@ -125,121 +124,186 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Header */}
-      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-40 px-4 py-3 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 flex items-center justify-center font-black text-xl shadow-lg shadow-indigo-500/20">
-            A
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg text-white tracking-tight">Axeom Intelligence</h1>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-medium">Pack 64</span>
-            </div>
-            <p className="text-xs text-slate-400">Dallas Content Studio · System Today: <span className="text-amber-400 font-semibold">Oct 6, 2026</span></p>
-          </div>
-        </div>
+    <div className="min-h-screen bg-[#07090E] text-slate-100 flex flex-col font-sans selection:bg-indigo-500/30 selection:text-indigo-200">
+      
+      {/* Ambient background glow */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-gradient-to-b from-indigo-600/10 via-rose-600/5 to-transparent blur-3xl opacity-70" />
+      </div>
 
-        {/* Global Search & Upload */}
-        <div className="flex items-center gap-2 flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-500" />
-            <input 
-              type="text" 
-              placeholder="Search 29 clients by name, alias, phone, email..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-800/80 border border-slate-700/80 rounded-lg pl-9 pr-3 py-1.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-            />
+      {/* Top Navbar */}
+      <header className="border-b border-white/[0.06] bg-[#0A0D14]/80 backdrop-blur-xl sticky top-0 z-40 px-6 py-3.5">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+          
+          {/* Logo & Status */}
+          <div className="flex items-center gap-3.5">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-indigo-600 p-[1px] shadow-lg shadow-indigo-500/20">
+              <div className="w-full h-full bg-[#090D15] rounded-[11px] flex items-center justify-center font-black text-white text-base">
+                A
+              </div>
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-base tracking-tight text-white">Axeom Intelligence</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/[0.08] text-indigo-300 font-semibold tracking-wider">
+                  PACK 64
+                </span>
+                <span className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium pl-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Live Operational
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400">Dallas Content Studio · System Date: <strong className="text-slate-200 font-medium">October 6, 2026</strong></p>
+            </div>
           </div>
-          <button 
-            onClick={() => setUploadModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-semibold whitespace-nowrap shadow transition"
-          >
-            <Upload className="h-3.5 w-3.5" />
-            <span>Add New Files</span>
-          </button>
+
+          {/* Search & Actions */}
+          <div className="flex items-center gap-3 flex-1 max-w-lg justify-end">
+            <div className="relative w-full max-w-xs">
+              <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-slate-500" />
+              <input 
+                type="text" 
+                placeholder="Search clients, aliases, phones..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-white/[0.04] border border-white/[0.08] rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500/50 transition"
+              />
+            </div>
+            <button 
+              onClick={() => setUploadModalOpen(true)}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl text-xs font-semibold whitespace-nowrap shadow-md shadow-indigo-600/20 hover:shadow-indigo-600/40 transition active:scale-95"
+            >
+              <Upload className="h-3.5 w-3.5" />
+              <span>Add New Files</span>
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Navigation Tabs */}
-      <nav className="border-b border-slate-800 bg-slate-900/50 px-4 flex gap-1 overflow-x-auto text-sm">
-        {[
-          { id: 'priorities', label: '🚨 Today (10s Test)', badge: '3 Actions' },
-          { id: 'clients', label: '👥 Client 360', badge: '29' },
-          { id: 'finance', label: '💰 Financial Audit', badge: `$${(totalOverdue/1000).toFixed(1)}k Due` },
-          { id: 'production', label: '🎬 Production & Revisions', badge: '18 Lost' },
-          { id: 'pipeline', label: '📈 Leads & Channels', badge: '85.7% Won' },
-          { id: 'jev', label: '⚡ Jev AI (96% Acc)', badge: 'System One' },
-        ].map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`py-2.5 px-3.5 border-b-2 font-medium flex items-center gap-2 whitespace-nowrap transition ${
-              activeTab === tab.id 
-                ? 'border-indigo-500 text-white bg-slate-800/40' 
-                : 'border-transparent text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            {tab.label}
-            {tab.badge && (
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                tab.id === 'priorities' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-slate-800 text-slate-400'
-              }`}>
-                {tab.badge}
-              </span>
-            )}
-          </button>
-        ))}
-      </nav>
+      {/* Floating Segmented Pill Navigation */}
+      <div className="border-b border-white/[0.04] bg-[#080B10]/90 backdrop-blur-md px-6 py-2 sticky top-[57px] z-30">
+        <div className="max-w-7xl mx-auto flex items-center justify-between overflow-x-auto gap-2 py-1 scrollbar-none">
+          <div className="flex items-center gap-1.5 p-1 bg-white/[0.03] border border-white/[0.06] rounded-full">
+            {[
+              { id: 'priorities', label: 'Command Stream', badge: '10s Test', alert: true },
+              { id: 'clients', label: 'Client 360', badge: '29' },
+              { id: 'finance', label: 'Financial Audit', badge: `$${(totalOverdue/1000).toFixed(1)}k Due` },
+              { id: 'production', label: 'Production QA', badge: '18 Stuck' },
+              { id: 'pipeline', label: 'Lead Funnel', badge: '85.7% Won' },
+              { id: 'jev', label: 'Jev AI Engine', badge: '96% Acc' },
+            ].map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`py-1.5 px-4 rounded-full text-xs font-medium flex items-center gap-2 whitespace-nowrap transition-all duration-200 ${
+                  activeTab === tab.id 
+                    ? 'bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/40 text-white shadow-sm shadow-indigo-500/10' 
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/[0.02]'
+                }`}
+              >
+                <span>{tab.label}</span>
+                {tab.badge && (
+                  <span className={`text-[10px] px-2 py-0.2 rounded-full font-semibold ${
+                    tab.alert 
+                      ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' 
+                      : activeTab === tab.id 
+                        ? 'bg-indigo-500/30 text-indigo-200' 
+                        : 'bg-white/[0.06] text-slate-400'
+                  }`}>
+                    {tab.badge}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
 
-      {/* Main Content Area */}
-      <main className="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
+          <div className="hidden lg:flex items-center gap-3 text-xs text-slate-400 pl-4 border-l border-white/[0.06]">
+            <span>Dallas: <strong className="text-slate-200 font-mono">11:24 AM CDT</strong></span>
+            <span className="w-1 h-1 rounded-full bg-slate-700" />
+            <span>Soundstages: <strong className="text-emerald-400 font-medium">3 Active</strong></span>
+          </div>
+        </div>
+      </div>
 
-        {/* 10-SECOND TEST HERO SECTION */}
+      {/* Main Container */}
+      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-8 relative z-10">
+
+        {/* =========================================================================
+            TAB 1: PRIORITIES (THE 10-SECOND TEST)
+        ========================================================================== */}
         {activeTab === 'priorities' && (
-          <div className="space-y-6">
-            <div className="bg-gradient-to-r from-rose-950/40 via-indigo-950/30 to-slate-900 border border-rose-500/30 rounded-2xl p-5 shadow-2xl relative overflow-hidden">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold border border-rose-500/40 mb-2">
-                    <ShieldAlert className="h-3.5 w-3.5 animate-pulse" />
-                    PASSES THE 10-SECOND TEST
+          <div className="space-y-8">
+            
+            {/* 10-Second Test Hero Header */}
+            <div className="relative rounded-3xl p-8 overflow-hidden border border-white/[0.08] bg-gradient-to-b from-white/[0.04] to-transparent backdrop-blur-2xl shadow-2xl">
+              
+              {/* Subtle radial corner glow */}
+              <div className="absolute top-0 right-0 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/[0.06]">
+                <div className="space-y-2">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs font-semibold tracking-wide">
+                    <ShieldAlert className="h-3.5 w-3.5 text-rose-400 animate-pulse" />
+                    EXECUTIVE 10-SECOND TEST PASS
                   </div>
-                  <h2 className="text-xl md:text-2xl font-black text-white">Good morning Zaid. Here are your Top 3 Decisions Today:</h2>
-                  <p className="text-sm text-slate-300 mt-1 max-w-2xl">
-                    Review and tap any action card. Per your rule: <em>Axeom AI suggests, but will never act alone.</em>
+                  <h2 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">
+                    Good morning Zaid. Here are your 3 critical decisions today:
+                  </h2>
+                  <p className="text-xs md:text-sm text-slate-400 max-w-2xl leading-relaxed">
+                    Designed for zero friction. Tap any action card to review and approve tailored drafts. 
+                    <span className="text-indigo-400 font-medium ml-1">Axeom AI suggests, but will never act alone.</span>
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <div className="text-right">
-                    <div className="text-2xl font-black text-emerald-400">${(totalOverdue).toLocaleString()}</div>
-                    <div className="text-xs text-slate-400">Total True Overdue</div>
+
+                {/* Telemetry pill readouts */}
+                <div className="flex items-center gap-4 bg-white/[0.02] border border-white/[0.06] rounded-2xl p-4 shrink-0">
+                  <div className="text-left pr-4 border-r border-white/[0.08]">
+                    <div className="text-2xl md:text-3xl font-black text-rose-400 tracking-tight font-mono">$30,000<span className="text-sm font-normal text-rose-400/80">/yr</span></div>
+                    <div className="text-[11px] text-slate-400 mt-0.5">Retainer at Immediate Risk</div>
                   </div>
-                  <div className="w-px bg-slate-800 mx-2" />
-                  <div className="text-right">
-                    <div className="text-2xl font-black text-rose-400">$30,000/yr</div>
-                    <div className="text-xs text-slate-400">Retainer at Immediate Risk</div>
+                  <div className="text-left pl-2">
+                    <div className="text-2xl md:text-3xl font-black text-emerald-400 tracking-tight font-mono">${(totalOverdue).toLocaleString()}</div>
+                    <div className="text-[11px] text-slate-400 mt-0.5">Verified Cash Collectible</div>
                   </div>
                 </div>
               </div>
 
-              {/* Priority Cards Grid */}
-              <div className="grid md:grid-cols-3 gap-4 mt-6">
-                {/* Priority 1 */}
-                <div className="bg-slate-900/90 border-2 border-rose-500/50 rounded-xl p-4 flex flex-col justify-between hover:border-rose-400 transition shadow-lg">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-bold text-rose-400 uppercase tracking-wider mb-1">
-                      <span>Priority 1 · Urgent Churn</span>
-                      <span className="px-1.5 py-0.5 rounded bg-rose-900/60 text-rose-200">9:00 AM</span>
+              {/* 3 Spacious High-End Action Cards */}
+              <div className="grid md:grid-cols-3 gap-6 mt-8 relative z-10">
+                
+                {/* PRIORITY 1: CHURN PREVENTION */}
+                <div className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#140D15] to-[#0D101A] border border-rose-500/30 hover:border-rose-400/60 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-rose-500/10 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono uppercase font-bold tracking-wider px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                        Priority 1 · 9:00 AM
+                      </span>
+                      <span className="text-[11px] font-medium text-rose-400/90 flex items-center gap-1 font-mono">
+                        <Clock className="h-3 w-3" /> Urgent
+                      </span>
                     </div>
-                    <h3 className="font-bold text-base text-white">Halt Patel Insurance Contract Cancellation</h3>
-                    <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                      Nina Patel emailed Oct 2: <em>&ldquo;We need to talk about the contract this week.&rdquo;</em> Unreplied for 4 days. $5,000 in frozen invoices. Critical brand compliance failure (legal name ignored).
-                    </p>
+
+                    <div>
+                      <h3 className="font-bold text-lg text-white group-hover:text-rose-200 transition">Halt Patel Insurance Contract Cancellation</h3>
+                      <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                        Nina Patel emailed Oct 2: <em className="text-rose-200 font-medium">&ldquo;We need to talk about the contract this week.&rdquo;</em> Unreplied for 4 days. $5,000 in frozen invoices due to repeated legal name omissions.
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-black/40 border border-white/[0.04] text-[11px] space-y-1">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Account Value:</span>
+                        <strong className="text-slate-200 font-mono">$2,500/month Retainer</strong>
+                      </div>
+                      <div className="flex justify-between text-slate-400">
+                        <span>Contact:</span>
+                        <span className="text-indigo-300 font-mono">Nina Patel (214-555-0196)</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-slate-800 flex flex-col gap-2">
+
+                  <div className="pt-6 mt-4 border-t border-white/[0.06]">
                     <button 
                       onClick={() => handleOpenAction({
                         id: 'act-1',
@@ -253,27 +317,46 @@ export default function Dashboard() {
                         contactMethod: 'phone',
                         contactTarget: '214-555-0196'
                       })}
-                      className="w-full py-2 px-3 bg-rose-600 hover:bg-rose-500 text-white rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition shadow"
+                      className="w-full py-2.5 px-4 bg-gradient-to-r from-rose-600 to-rose-500 hover:from-rose-500 hover:to-rose-400 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-rose-600/30 transition-all active:scale-95"
                     >
                       <Phone className="h-3.5 w-3.5" />
-                      <span>Review Call & Script</span>
+                      <span>Review Call Script &amp; Offer</span>
                     </button>
                   </div>
                 </div>
 
-                {/* Priority 2 */}
-                <div className="bg-slate-900/90 border-2 border-amber-500/50 rounded-xl p-4 flex flex-col justify-between hover:border-amber-400 transition shadow-lg">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-bold text-amber-400 uppercase tracking-wider mb-1">
-                      <span>Priority 2 · Cash Recovery</span>
-                      <span className="px-1.5 py-0.5 rounded bg-amber-900/60 text-amber-200">10:00 AM</span>
+                {/* PRIORITY 2: CASH RECOVERY */}
+                <div className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#14120D] to-[#0D101A] border border-amber-500/30 hover:border-amber-400/60 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-amber-500/10 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono uppercase font-bold tracking-wider px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                        Priority 2 · 10:00 AM
+                      </span>
+                      <span className="text-[11px] font-medium text-amber-400/90 font-mono">
+                        $9,250 Owed
+                      </span>
                     </div>
-                    <h3 className="font-bold text-base text-white">Collect $9,250 Past Due Receivables</h3>
-                    <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                      Lonestar Realty ($1,500, 39d late), TLC Homecare ($1,500, 21d late), Prime Roofing ($450 bal, 21d late), Mike&apos;s Roofing ($900, 15d late), Brightline ($900, 15d late).
-                    </p>
+
+                    <div>
+                      <h3 className="font-bold text-lg text-white group-hover:text-amber-200 transition">Recover $9,250 in Verified Overdue Debt</h3>
+                      <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                        Lonestar Realty ($1,500, 39d late), TLC Homecare ($1,500, 21d late), Prime Roofing ($450 bal, 21d late), Mike&apos;s Roofing ($900, 15d late), Brightline ($900, 15d late).
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-black/40 border border-white/[0.04] text-[11px] space-y-1">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Oldest Delinquent:</span>
+                        <strong className="text-amber-300 font-mono">Lonestar (39 Days Late)</strong>
+                      </div>
+                      <div className="flex justify-between text-slate-400">
+                        <span>Safe to Remind:</span>
+                        <span className="text-emerald-400 font-medium">Bank payments audited</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-slate-800 flex flex-col gap-2">
+
+                  <div className="pt-6 mt-4 border-t border-white/[0.06]">
                     <button 
                       onClick={() => handleOpenAction({
                         id: 'act-2',
@@ -287,7 +370,7 @@ export default function Dashboard() {
                         contactMethod: 'email',
                         contactTarget: 'greg@lonestarrg.com'
                       })}
-                      className="w-full py-2 px-3 bg-amber-600 hover:bg-amber-500 text-white rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition shadow"
+                      className="w-full py-2.5 px-4 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-amber-600/30 transition-all active:scale-95"
                     >
                       <DollarSign className="h-3.5 w-3.5" />
                       <span>Review Payment Reminders</span>
@@ -295,19 +378,38 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                {/* Priority 3 */}
-                <div className="bg-slate-900/90 border-2 border-indigo-500/50 rounded-xl p-4 flex flex-col justify-between hover:border-indigo-400 transition shadow-lg">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-bold text-indigo-400 uppercase tracking-wider mb-1">
-                      <span>Priority 3 · Operations QA</span>
-                      <span className="px-1.5 py-0.5 rounded bg-indigo-900/60 text-indigo-200">11:30 AM</span>
+                {/* PRIORITY 3: PRODUCTION QA */}
+                <div className="group relative rounded-2xl p-6 bg-gradient-to-b from-[#0D0F18] to-[#0A0D14] border border-indigo-500/30 hover:border-indigo-400/60 transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-indigo-500/10 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-mono uppercase font-bold tracking-wider px-2.5 py-1 rounded-lg bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                        Priority 3 · 11:30 AM
+                      </span>
+                      <span className="text-[11px] font-medium text-indigo-300 font-mono">
+                        4 Editors Ready
+                      </span>
                     </div>
-                    <h3 className="font-bold text-base text-white">Clear 7 Blocked Revisions Before Shoots</h3>
-                    <p className="text-xs text-slate-300 mt-2 leading-relaxed">
-                      Clients with upcoming shoots this week (Elevate, Glow, Harbor Coffee, Bloom) have unaddressed &ldquo;second time I ask&rdquo; edits. Assign morning sprint to editors Ali, Rita, Sam, and Dev.
-                    </p>
+
+                    <div>
+                      <h3 className="font-bold text-lg text-white group-hover:text-indigo-200 transition">Clear 7 Blocked Revisions Before Shoots</h3>
+                      <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                        Clients with shoots this week (Elevate, Glow, Harbor Coffee, Bloom) have unresolved &ldquo;second time I ask&rdquo; edits. Assign morning sprint to editors Ali, Rita, Sam, and Dev.
+                      </p>
+                    </div>
+
+                    <div className="p-3 rounded-xl bg-black/40 border border-white/[0.04] text-[11px] space-y-1">
+                      <div className="flex justify-between text-slate-400">
+                        <span>Target Sprint Finish:</span>
+                        <strong className="text-indigo-300 font-mono">12:00 PM Today</strong>
+                      </div>
+                      <div className="flex justify-between text-slate-400">
+                        <span>Assigned Editors:</span>
+                        <span className="text-slate-300">Ali, Rita, Sam, Dev</span>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mt-4 pt-3 border-t border-slate-800 flex flex-col gap-2">
+
+                  <div className="pt-6 mt-4 border-t border-white/[0.06]">
                     <button 
                       onClick={() => handleOpenAction({
                         id: 'act-3',
@@ -321,71 +423,75 @@ export default function Dashboard() {
                         contactMethod: 'whatsapp',
                         contactTarget: 'Axeom Production Group'
                       })}
-                      className="w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-bold text-xs flex items-center justify-center gap-1.5 transition shadow"
+                      className="w-full py-2.5 px-4 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 transition-all active:scale-95"
                     >
                       <Video className="h-3.5 w-3.5" />
                       <span>Review Team Sprint Brief</span>
                     </button>
                   </div>
                 </div>
+
               </div>
             </div>
 
-            {/* Quick Metrics Bar */}
+            {/* Polished Telemetry KPI Strip */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
-                <div className="text-slate-400 text-xs font-medium">True Client Count</div>
-                <div className="text-2xl font-bold text-white mt-1">29 Clients</div>
-                <div className="text-xs text-emerald-400 mt-1 flex items-center gap-1">
-                  <CheckCircle className="h-3 w-3" /> Fully Resolved &amp; Deduplicated
+              <div className="rounded-2xl p-5 bg-[#0C1019] border border-white/[0.06] hover:border-white/[0.12] transition relative overflow-hidden">
+                <div className="text-xs text-slate-400 font-medium">True Client Count</div>
+                <div className="text-2xl font-black text-white mt-2 font-mono">29 Clients</div>
+                <div className="text-[11px] text-emerald-400 mt-1 flex items-center gap-1 font-medium">
+                  <CheckCircle className="h-3.5 w-3.5" /> Deduplicated &amp; Resolved
                 </div>
               </div>
 
-              <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
-                <div className="text-slate-400 text-xs font-medium">Never Billed Revenue</div>
-                <div className="text-2xl font-bold text-amber-400 mt-1">${neverBilledTotal.toLocaleString()}</div>
-                <div className="text-xs text-slate-400 mt-1">5 Bookings + 4 Retainers unbilled</div>
+              <div className="rounded-2xl p-5 bg-[#0C1019] border border-white/[0.06] hover:border-white/[0.12] transition relative overflow-hidden">
+                <div className="text-xs text-slate-400 font-medium">Unbilled Revenue Found</div>
+                <div className="text-2xl font-black text-amber-400 mt-2 font-mono">${neverBilledTotal.toLocaleString()}</div>
+                <div className="text-[11px] text-slate-400 mt-1">5 Bookings + 4 Retainer Shoots</div>
               </div>
 
-              <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
-                <div className="text-slate-400 text-xs font-medium">We Owe Clients (Refund)</div>
-                <div className="text-2xl font-bold text-rose-400 mt-1">${weOweTotal}</div>
-                <div className="text-xs text-slate-400 mt-1">Glow Aesthetics double-payment</div>
+              <div className="rounded-2xl p-5 bg-[#0C1019] border border-white/[0.06] hover:border-white/[0.12] transition relative overflow-hidden">
+                <div className="text-xs text-slate-400 font-medium">We Owe Clients (Liability)</div>
+                <div className="text-2xl font-black text-rose-400 mt-2 font-mono">${weOweTotal}</div>
+                <div className="text-[11px] text-slate-400 mt-1">Glow Aesthetics Double-Payment</div>
               </div>
 
-              <div className="bg-slate-900/70 border border-slate-800 rounded-xl p-4">
-                <div className="text-slate-400 text-xs font-medium">Top Marketing Channel</div>
-                <div className="text-2xl font-bold text-indigo-400 mt-1">Referral (85.7%)</div>
-                <div className="text-xs text-emerald-400 mt-1">$32.4k generated, $0 CAC</div>
+              <div className="rounded-2xl p-5 bg-[#0C1019] border border-white/[0.06] hover:border-white/[0.12] transition relative overflow-hidden">
+                <div className="text-xs text-slate-400 font-medium">Top Acquisition Channel</div>
+                <div className="text-2xl font-black text-indigo-400 mt-2 font-mono">Referral (85.7%)</div>
+                <div className="text-[11px] text-emerald-400 mt-1">$32.4k Revenue · $0 CAC</div>
               </div>
             </div>
+
           </div>
         )}
 
-        {/* CLIENT 360 DIRECTORY */}
+        {/* =========================================================================
+            TAB 2: CLIENT 360 DIRECTORY
+        ========================================================================== */}
         {activeTab === 'clients' && (
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
+          <div className="space-y-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-lg font-bold text-white">Client 360 Directory</h2>
-                <p className="text-xs text-slate-400">All 29 canonical clients cross-referenced across bookings, invoices, videos, and communication channels.</p>
+                <h2 className="text-xl font-extrabold text-white">Client 360 Unified Directory</h2>
+                <p className="text-xs text-slate-400 mt-1">Cross-referenced across bookings, billing, studio sessions, and message channels.</p>
               </div>
-              <span className="text-xs px-2.5 py-1 bg-slate-800 border border-slate-700 rounded-lg text-slate-300 font-medium">
-                Showing {filteredClients.length} clients
+              <span className="text-xs px-3 py-1 bg-white/[0.04] border border-white/[0.08] rounded-full text-slate-300 font-medium w-fit">
+                Showing {filteredClients.length} of 29 clients
               </span>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredClients.map((client) => (
                 <div 
                   key={client.id}
                   onClick={() => setSelectedClient(client)}
-                  className="bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 p-4 rounded-xl cursor-pointer transition flex flex-col justify-between group"
+                  className="group rounded-2xl p-5 bg-[#0C1019] border border-white/[0.06] hover:border-indigo-500/50 hover:bg-[#101422] transition-all cursor-pointer flex flex-col justify-between shadow-lg hover:shadow-indigo-500/10"
                 >
-                  <div>
+                  <div className="space-y-3">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="font-bold text-sm text-white group-hover:text-indigo-300 transition">{client.name}</h3>
-                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase ${
+                      <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
                         client.riskStatus === 'critical' ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' :
                         client.riskStatus === 'warning' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
                         'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
@@ -394,15 +500,15 @@ export default function Dashboard() {
                       </span>
                     </div>
 
-                    <div className="mt-2 space-y-1 text-xs text-slate-400">
+                    <div className="space-y-1.5 text-xs text-slate-400">
                       <div><span className="text-slate-500">Emails:</span> {client.emails.join(', ')}</div>
                       <div><span className="text-slate-500">Phones:</span> {client.phones.join(', ') || 'N/A'}</div>
                       <div className="truncate"><span className="text-slate-500">Aliases:</span> {client.other_names_used_in_the_data.slice(0, 3).join(', ')}</div>
                     </div>
                   </div>
 
-                  <div className="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-indigo-400 font-medium">
-                    <span>View Client Dossier</span>
+                  <div className="mt-4 pt-3 border-t border-white/[0.04] flex items-center justify-between text-xs text-indigo-400 font-medium group-hover:text-indigo-300">
+                    <span>Inspect Unified History</span>
                     <ChevronRight className="h-4 w-4 transform group-hover:translate-x-1 transition" />
                   </div>
                 </div>
@@ -411,48 +517,51 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* FINANCIAL AUDIT */}
+        {/* =========================================================================
+            TAB 3: FINANCIAL AUDIT
+        ========================================================================== */}
         {activeTab === 'finance' && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div>
-              <h2 className="text-lg font-bold text-white">Financial Audit &amp; Reconciliation</h2>
-              <p className="text-xs text-slate-400">Verifying bank deposits against billing software records as of October 6, 2026.</p>
+              <h2 className="text-xl font-extrabold text-white">Financial Audit &amp; Reconciliation</h2>
+              <p className="text-xs text-slate-400 mt-1">Cross-referencing real bank deposits with billing software invoices as of October 6, 2026.</p>
             </div>
 
-            {/* Overdue Table */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-              <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-900/60">
-                <div className="flex items-center gap-2">
+            {/* Overdue Invoices Table */}
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0C1019] overflow-hidden shadow-xl">
+              <div className="p-5 border-b border-white/[0.06] flex items-center justify-between bg-white/[0.01]">
+                <div className="flex items-center gap-2.5">
                   <AlertTriangle className="h-4 w-4 text-amber-400" />
-                  <h3 className="font-bold text-sm text-white">Verified Overdue Invoices (${totalOverdue.toLocaleString()} Total)</h3>
+                  <h3 className="font-bold text-sm text-white">True Overdue Accounts (${totalOverdue.toLocaleString()} Total)</h3>
                 </div>
-                <span className="text-xs text-slate-400">Filtered for genuine unpaid debts</span>
+                <span className="text-xs text-slate-400">Excludes falsely flagged paid invoices</span>
               </div>
+              
               <div className="overflow-x-auto">
                 <table className="w-full text-xs text-left">
-                  <thead className="bg-slate-950 text-slate-400 border-b border-slate-800">
+                  <thead className="bg-white/[0.02] text-slate-400 border-b border-white/[0.06]">
                     <tr>
-                      <th className="py-2.5 px-4">Invoice</th>
-                      <th className="py-2.5 px-4">Client</th>
-                      <th className="py-2.5 px-4">Amount Owed</th>
-                      <th className="py-2.5 px-4">Days Late</th>
-                      <th className="py-2.5 px-4 text-right">Action</th>
+                      <th className="py-3 px-5 font-medium">Invoice ID</th>
+                      <th className="py-3 px-5 font-medium">Client</th>
+                      <th className="py-3 px-5 font-medium">Amount Owed</th>
+                      <th className="py-3 px-5 font-medium">Days Late</th>
+                      <th className="py-3 px-5 text-right font-medium">One-Tap Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800/60">
+                  <tbody className="divide-y divide-white/[0.04]">
                     {overdueInvoices.map((item, idx) => (
-                      <tr key={idx} className="hover:bg-slate-800/30">
-                        <td className="py-2.5 px-4 font-mono font-medium text-indigo-300">{item.invoice}</td>
-                        <td className="py-2.5 px-4 font-medium text-white">{item.client}</td>
-                        <td className="py-2.5 px-4 font-bold text-amber-400">${item.amount_owed}</td>
-                        <td className="py-2.5 px-4">
-                          <span className={`px-2 py-0.5 rounded font-bold ${
-                            item.days_late >= 30 ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'
+                      <tr key={idx} className="hover:bg-white/[0.02] transition">
+                        <td className="py-3 px-5 font-mono font-medium text-indigo-300">{item.invoice}</td>
+                        <td className="py-3 px-5 font-medium text-white">{item.client}</td>
+                        <td className="py-3 px-5 font-bold text-amber-400 font-mono">${item.amount_owed}</td>
+                        <td className="py-3 px-5">
+                          <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] font-mono ${
+                            item.days_late >= 30 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                           }`}>
                             {item.days_late} days
                           </span>
                         </td>
-                        <td className="py-2.5 px-4 text-right">
+                        <td className="py-3 px-5 text-right">
                           <button 
                             onClick={() => handleOpenAction({
                               id: `remind-${item.invoice}`,
@@ -466,7 +575,7 @@ export default function Dashboard() {
                               contactMethod: 'email',
                               contactTarget: item.client
                             })}
-                            className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded font-medium text-[11px] transition"
+                            className="px-3 py-1 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 rounded-lg font-medium text-[11px] transition"
                           >
                             Draft Reminder
                           </button>
@@ -478,20 +587,20 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* We Owe & Billing Tool Bugs */}
-            <div className="grid md:grid-cols-2 gap-4">
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-                <div className="flex items-center gap-2 text-rose-400 font-bold text-sm mb-2">
+            {/* Split row: We Owe & Billing Tool Bugs */}
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-3">
+                <div className="flex items-center gap-2 text-rose-400 font-bold text-sm">
                   <AlertCircle className="h-4 w-4" />
                   <span>We Owe (Client Overpayment Liability)</span>
                 </div>
-                <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs space-y-1">
+                <div className="p-4 rounded-xl bg-black/40 border border-white/[0.04] text-xs space-y-2">
                   <div className="flex justify-between font-bold text-white">
                     <span>Glow Aesthetics</span>
-                    <span className="text-rose-400">$900.00 Refund / Credit</span>
+                    <span className="text-rose-400 font-mono font-bold">$900.00 Refund / Credit</span>
                   </div>
                   <p className="text-slate-400 leading-relaxed">
-                    Invoice INV-1088 was paid twice: once via Zelle (P5084, $900 on 07/30) and once via Card (P5086, $900 on 07/31), totaling $1,800 received for a $900 bill.
+                    Invoice INV-1088 was paid twice in error: once via Zelle (P5084, $900 on 07/30) and once via Card (P5086, $900 on 07/31), creating a $900 double-charge.
                   </p>
                   <button 
                     onClick={() => handleOpenAction({
@@ -506,24 +615,25 @@ export default function Dashboard() {
                       contactMethod: 'whatsapp',
                       contactTarget: '972-555-0153'
                     })}
-                    className="mt-2 text-indigo-400 hover:underline font-medium block"
+                    className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-1 pt-1"
                   >
-                    Suggest Credit for Oct 7 Shoot &rarr;
+                    <span>Suggest Credit for Tomorrow&apos;s Shoot</span>
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </button>
                 </div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-                <div className="flex items-center gap-2 text-amber-400 font-bold text-sm mb-2">
+              <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-3">
+                <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
                   <RefreshCw className="h-4 w-4" />
-                  <span>Billing Tool Errors Discovered</span>
+                  <span>Discovered Billing Software Errors</span>
                 </div>
                 <div className="space-y-2 text-xs">
                   {initialAnswers.billing_tool_is_wrong.slice(0, 3).map((bug, i) => (
-                    <div key={i} className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
+                    <div key={i} className="p-3 rounded-xl bg-black/40 border border-white/[0.04] space-y-1">
                       <div className="font-mono font-bold text-indigo-300">{bug.invoice}</div>
-                      <div className="text-slate-300 mt-0.5"><span className="text-slate-500">Tool:</span> {bug.tool_says}</div>
-                      <div className="text-emerald-400 mt-0.5"><span className="text-slate-500">Truth:</span> {bug.truth}</div>
+                      <div className="text-slate-300"><span className="text-slate-500">Tool Claimed:</span> {bug.tool_says}</div>
+                      <div className="text-emerald-400"><span className="text-slate-500">Bank Reality:</span> {bug.truth}</div>
                     </div>
                   ))}
                 </div>
@@ -532,48 +642,48 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* PRODUCTION & LOST EDITS */}
+        {/* =========================================================================
+            TAB 4: PRODUCTION & REVISIONS
+        ========================================================================== */}
         {activeTab === 'production' && (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-bold text-white">Production Board &amp; Revision Triage</h2>
-              <p className="text-xs text-slate-400">Tracking 325 video deliverables across editors Ali, Rita, Sam, and Dev.</p>
+              <h2 className="text-xl font-extrabold text-white">Production Board &amp; Revision Triage</h2>
+              <p className="text-xs text-slate-400 mt-1">Monitoring 325 video deliverables across editors Ali, Rita, Sam, and Dev.</p>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-3">
+            <div className="grid md:grid-cols-4 gap-4">
               {[
-                { name: 'Rita', count: '108 Videos', pay: '$30/hr', status: 'Optimal (Low revisions)' },
-                { name: 'Ali', count: '115 Videos', pay: '$35/hr', status: 'Fastest turnarounds' },
-                { name: 'Sam', count: '74 Videos', pay: '$22/hr', status: 'High hours (Joined July 20)' },
+                { name: 'Rita', count: '108 Videos', pay: '$30/hr', status: 'Lowest Revision Rate (Senior)' },
+                { name: 'Ali', count: '115 Videos', pay: '$35/hr', status: 'Fastest Initial Rough Cuts' },
+                { name: 'Sam', count: '74 Videos', pay: '$22/hr', status: 'High Revision Hours (Joined July 20)' },
                 { name: 'Dev', count: '28 Videos', pay: '$40/hr', status: 'Freelance (Joined Sept 1)' },
               ].map((ed, i) => (
-                <div key={i} className="bg-slate-900 border border-slate-800 p-3 rounded-xl">
+                <div key={i} className="rounded-2xl p-5 bg-[#0C1019] border border-white/[0.06] space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="font-bold text-white text-sm">{ed.name}</span>
-                    <span className="text-[10px] px-1.5 py-0.5 bg-slate-800 rounded text-slate-300 font-mono">{ed.pay}</span>
+                    <span className="font-bold text-white text-base">{ed.name}</span>
+                    <span className="text-[11px] px-2 py-0.5 bg-white/[0.04] rounded-md text-slate-300 font-mono">{ed.pay}</span>
                   </div>
-                  <div className="text-xs text-indigo-400 font-semibold mt-1">{ed.count}</div>
-                  <div className="text-[11px] text-slate-400 mt-0.5">{ed.status}</div>
+                  <div className="text-xs text-indigo-400 font-semibold">{ed.count}</div>
+                  <div className="text-[11px] text-slate-400">{ed.status}</div>
                 </div>
               ))}
             </div>
 
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-              <h3 className="font-bold text-sm text-white mb-3 flex items-center gap-2">
+            <div className="rounded-2xl border border-white/[0.08] bg-[#0C1019] p-6 space-y-4">
+              <h3 className="font-bold text-sm text-white flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 text-rose-400" />
-                <span>Active Blockers: 18 Documented Lost Requests</span>
+                <span>Documented Lost Requests (Why Clients Repeatedly Follow Up)</span>
               </h3>
-              <div className="space-y-2 max-h-96 overflow-y-auto">
+              <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                 {initialAnswers.lost_requests.map((req, i) => (
-                  <div key={i} className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs flex flex-col md:flex-row md:items-center justify-between gap-2">
-                    <div className="space-y-0.5">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-indigo-300">{req.video_id}</span>
-                        <span className="text-slate-500 font-mono">{req.request_date}</span>
-                        <span className="px-1.5 py-0.5 rounded bg-slate-800 text-[10px] uppercase font-bold text-slate-300">{req.came_by}</span>
-                      </div>
-                      <p className="text-slate-300 leading-relaxed">{req.why_it_was_lost}</p>
+                  <div key={i} className="p-3.5 rounded-xl bg-black/40 border border-white/[0.04] text-xs space-y-1.5">
+                    <div className="flex items-center gap-2.5">
+                      <span className="font-mono font-bold text-indigo-300">{req.video_id}</span>
+                      <span className="text-slate-500 font-mono text-[11px]">{req.request_date}</span>
+                      <span className="px-2 py-0.5 rounded-full bg-white/[0.06] text-[10px] uppercase font-bold text-slate-300 font-mono">{req.came_by}</span>
                     </div>
+                    <p className="text-slate-300 leading-relaxed">{req.why_it_was_lost}</p>
                   </div>
                 ))}
               </div>
@@ -581,48 +691,52 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* PIPELINE & MARKETING */}
+        {/* =========================================================================
+            TAB 5: PIPELINE & CHANNELS
+        ========================================================================== */}
         {activeTab === 'pipeline' && (
           <div className="space-y-6">
             <div>
-              <h2 className="text-lg font-bold text-white">Lead Generation &amp; Channel Performance</h2>
-              <p className="text-xs text-slate-400">Analysis of 99 inquiries across referral, ad channels, and organic sources.</p>
+              <h2 className="text-xl font-extrabold text-white">Lead Generation &amp; Channel Conversion</h2>
+              <p className="text-xs text-slate-400 mt-1">Audit of 99 inquiries across referral, ad campaigns, and organic channels.</p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                <div className="text-xs text-slate-400 font-medium">Champion Channel</div>
-                <div className="text-xl font-bold text-white mt-1">Referral</div>
-                <div className="text-2xl font-black text-emerald-400 mt-2">85.7% Close Rate</div>
-                <p className="text-xs text-slate-400 mt-1">6 won out of 7 leads ($32,400+ revenue). Zero advertising cost.</p>
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-2">
+                <div className="text-xs text-slate-400 font-medium">Champion Acquisition Channel</div>
+                <div className="text-xl font-bold text-white">Referrals</div>
+                <div className="text-3xl font-black text-emerald-400 font-mono mt-2">85.7% Won</div>
+                <p className="text-xs text-slate-400 leading-relaxed mt-1">6 won out of 7 leads ($32,400+ revenue). Zero advertising cost.</p>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                <div className="text-xs text-slate-400 font-medium">Paid Advertising (Meta Ads)</div>
-                <div className="text-xl font-bold text-white mt-1">22 Total Inquiries</div>
-                <div className="text-2xl font-black text-amber-400 mt-2">22.7% Close Rate</div>
-                <p className="text-xs text-slate-400 mt-1">High volume but lowest conversion rate due to slow initial reply times.</p>
+              <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-2">
+                <div className="text-xs text-slate-400 font-medium">Paid Meta Ads Campaign</div>
+                <div className="text-xl font-bold text-white">22 Total Inquiries</div>
+                <div className="text-3xl font-black text-amber-400 font-mono mt-2">22.7% Won</div>
+                <p className="text-xs text-slate-400 leading-relaxed mt-1">High inquiry volume but lowest close rate due to delayed first response.</p>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 p-4 rounded-xl">
-                <div className="text-xs text-slate-400 font-medium">Leads Slipping Through Cracks</div>
-                <div className="text-xl font-bold text-white mt-1">14 Unreplied Leads</div>
-                <div className="text-2xl font-black text-rose-400 mt-2">14.1% Neglect Rate</div>
-                <p className="text-xs text-slate-400 mt-1">Includes 2 warm referrals (Tom Diaz, Omar Haddad) with zero response.</p>
+              <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-2">
+                <div className="text-xs text-slate-400 font-medium">Unreplied Leads (Slipped Through Cracks)</div>
+                <div className="text-xl font-bold text-white">14 Missed Leads</div>
+                <div className="text-3xl font-black text-rose-400 font-mono mt-2">14.1% Neglect</div>
+                <p className="text-xs text-slate-400 leading-relaxed mt-1">Includes 2 warm referrals (Tom Diaz, Omar Haddad) with zero reply.</p>
               </div>
             </div>
 
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-4">
-              <h3 className="font-bold text-sm text-white mb-2">Unreplied Leads (Action Required)</h3>
-              <div className="grid md:grid-cols-2 gap-2 text-xs">
+            <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-4">
+              <h3 className="font-bold text-sm text-white">Unreplied Leads (One-Click Recovery Outreach)</h3>
+              <div className="grid md:grid-cols-2 gap-3 text-xs">
                 {initialAnswers.never_replied_leads.map((id, i) => (
-                  <div key={i} className="p-2.5 bg-slate-950 rounded-lg border border-slate-800 flex justify-between items-center">
-                    <span className="font-mono font-bold text-indigo-300">{id}</span>
-                    <span className="text-slate-400">Status: New (No response recorded)</span>
+                  <div key={i} className="p-3 rounded-xl bg-black/40 border border-white/[0.04] flex justify-between items-center">
+                    <div>
+                      <span className="font-mono font-bold text-indigo-300">{id}</span>
+                      <span className="text-slate-400 ml-2">Status: New (No response recorded)</span>
+                    </div>
                     <button 
                       onClick={() => handleOpenAction({
                         id: `lead-${id}`,
-                        title: `Quick Outreach to ${id}`,
+                        title: `Quick Outreach to Lead ${id}`,
                         category: 'urgent_churn',
                         severity: 'medium',
                         client: id,
@@ -632,7 +746,7 @@ export default function Dashboard() {
                         contactMethod: 'email',
                         contactTarget: id
                       })}
-                      className="text-xs text-indigo-400 hover:underline font-medium"
+                      className="text-xs text-indigo-400 hover:text-indigo-300 font-semibold"
                     >
                       Draft Outreach &rarr;
                     </button>
@@ -643,92 +757,94 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* JEV AI SYSTEM ONE DEMO */}
+        {/* =========================================================================
+            TAB 6: JEV AI ENGINE (TYPESAFE AI)
+        ========================================================================== */}
         {activeTab === 'jev' && (
           <div className="space-y-6">
-            <div className="bg-gradient-to-r from-indigo-950/60 to-slate-900 border border-indigo-500/30 rounded-2xl p-5">
-              <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs uppercase tracking-wider mb-1">
+            <div className="rounded-3xl p-8 bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-[#0A0D14] border border-indigo-500/30 space-y-4">
+              <div className="flex items-center gap-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
                 <Sparkles className="h-4 w-4" />
-                <span>Part 3: TypeSafe AI Jev Integration</span>
+                <span>TypeSafe AI Jev Integration · Part 3 Benchmark</span>
               </div>
-              <h2 className="text-xl font-black text-white">Jev System One Decision Engine</h2>
-              <p className="text-sm text-slate-300 mt-1 max-w-3xl leading-relaxed">
-                Rather than slow, hallucination-prone chat LLMs, Jev executes sub-50ms probabilistic typed evaluations (`Noul`, `Choice`, `Score`) directly on incoming messages to classify revisions instantly.
+              <h2 className="text-2xl font-black text-white">Jev System One Decision Engine</h2>
+              <p className="text-sm text-slate-300 max-w-3xl leading-relaxed">
+                Rather than slow, unpredictable chat LLMs, Jev executes sub-50ms probabilistic typed evaluations (`Noul`, `Choice`, `Score`) directly on incoming messages to route video revisions instantly without human triage delay.
               </p>
 
-              <div className="grid md:grid-cols-3 gap-3 mt-4 text-xs">
-                <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
-                  <div className="text-slate-400">Noul (Binary Boolean)</div>
-                  <div className="text-lg font-bold text-emerald-400 mt-1">96.0% Accuracy</div>
+              <div className="grid md:grid-cols-3 gap-4 pt-2 text-xs">
+                <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
+                  <div className="text-slate-400 font-medium">Noul (Binary Boolean)</div>
+                  <div className="text-2xl font-black text-emerald-400 mt-1 font-mono">96.0% Acc</div>
                   <div className="text-slate-400 mt-0.5">48/50 hand-verified tests</div>
                 </div>
-                <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
-                  <div className="text-slate-400">Choice (Category)</div>
-                  <div className="text-lg font-bold text-indigo-400 mt-1">92.0% Accuracy</div>
+                <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
+                  <div className="text-slate-400 font-medium">Choice (Category)</div>
+                  <div className="text-2xl font-black text-indigo-400 mt-1 font-mono">92.0% Acc</div>
                   <div className="text-slate-400 mt-0.5">46/50 hand-verified tests</div>
                 </div>
-                <div className="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
-                  <div className="text-slate-400">Decision Latency</div>
-                  <div className="text-lg font-bold text-amber-400 mt-1">38ms / request</div>
-                  <div className="text-slate-400 mt-0.5">30x faster than chat LLMs</div>
+                <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06]">
+                  <div className="text-slate-400 font-medium">Decision Latency</div>
+                  <div className="text-2xl font-black text-amber-400 mt-1 font-mono">38ms / req</div>
+                  <div className="text-slate-400 mt-0.5">30x faster than chat models</div>
                 </div>
               </div>
             </div>
 
             {/* Interactive Jev Tester */}
-            <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
-              <h3 className="font-bold text-sm text-white">Live Jev Decision Simulator</h3>
-              <p className="text-xs text-slate-400">Test any client message to observe typed questions evaluated in parallel:</p>
+            <div className="rounded-2xl p-6 bg-[#0C1019] border border-white/[0.08] space-y-4">
+              <h3 className="font-bold text-sm text-white">Interactive Jev Decision Simulator</h3>
+              <p className="text-xs text-slate-400">Test any incoming client message to observe typed questions evaluated in parallel:</p>
 
-              <div className="flex flex-col md:flex-row gap-2">
+              <div className="flex flex-col md:flex-row gap-3">
                 <input 
                   type="text"
                   value={customJevMessage}
                   onChange={(e) => setCustomJevMessage(e.target.value)}
                   placeholder="Enter a client message (e.g. 'Can we make captions bigger?')"
-                  className="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  className="flex-1 bg-black/40 border border-white/[0.08] rounded-xl px-4 py-2.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
                 <button 
                   onClick={() => runJevEvaluation(customJevMessage)}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs rounded-lg transition"
+                  className="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-bold text-xs rounded-xl transition shadow-md shadow-indigo-600/30"
                 >
                   Evaluate with Jev
                 </button>
               </div>
 
               {jevResult && (
-                <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 space-y-3 font-mono text-xs">
-                  <div className="flex justify-between items-center text-slate-400 border-b border-slate-800 pb-2">
+                <div className="p-5 bg-black/50 rounded-xl border border-white/[0.06] space-y-4 font-mono text-xs">
+                  <div className="flex justify-between items-center text-slate-400 border-b border-white/[0.06] pb-2">
                     <span>POST /v1/systemone/eval</span>
-                    <span className="text-emerald-400">{jevResult.latencyMs}ms</span>
+                    <span className="text-emerald-400 font-bold">{jevResult.latencyMs}ms</span>
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-3">
-                    <div className="p-3 bg-slate-900 rounded-lg">
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div className="p-4 bg-white/[0.02] rounded-lg border border-white/[0.04]">
                       <div className="text-slate-500 text-[10px]">QUESTION 1 (NOUL)</div>
                       <div className="text-slate-300 font-bold mt-1">is_revision_request</div>
-                      <div className="text-lg font-bold text-emerald-400 mt-1">
+                      <div className="text-xl font-bold text-emerald-400 mt-2 font-mono">
                         {jevResult.questions.is_revision_request.value ? 'TRUE' : 'FALSE'}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">Confidence: {(jevResult.questions.is_revision_request.confidence * 100).toFixed(0)}%</div>
+                      <div className="text-[10px] text-slate-500 mt-1">Confidence: {(jevResult.questions.is_revision_request.confidence * 100).toFixed(0)}%</div>
                     </div>
 
-                    <div className="p-3 bg-slate-900 rounded-lg">
+                    <div className="p-4 bg-white/[0.02] rounded-lg border border-white/[0.04]">
                       <div className="text-slate-500 text-[10px]">QUESTION 2 (CHOICE)</div>
                       <div className="text-slate-300 font-bold mt-1">request_category</div>
-                      <div className="text-base font-bold text-indigo-400 mt-1">
+                      <div className="text-base font-bold text-indigo-400 mt-2">
                         {jevResult.questions.request_category.value}
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">Confidence: {(jevResult.questions.request_category.confidence * 100).toFixed(0)}%</div>
+                      <div className="text-[10px] text-slate-500 mt-1">Confidence: {(jevResult.questions.request_category.confidence * 100).toFixed(0)}%</div>
                     </div>
 
-                    <div className="p-3 bg-slate-900 rounded-lg">
+                    <div className="p-4 bg-white/[0.02] rounded-lg border border-white/[0.04]">
                       <div className="text-slate-500 text-[10px]">QUESTION 3 (SCORE)</div>
                       <div className="text-slate-300 font-bold mt-1">urgency_score</div>
-                      <div className="text-lg font-bold text-rose-400 mt-1">
+                      <div className="text-xl font-bold text-rose-400 mt-2 font-mono">
                         Level {jevResult.questions.urgency_score.level} / 5
                       </div>
-                      <div className="text-[10px] text-slate-500 mt-0.5">Calibrated Frustration Index</div>
+                      <div className="text-[10px] text-slate-500 mt-1">Calibrated Frustration Index</div>
                     </div>
                   </div>
                 </div>
@@ -739,16 +855,18 @@ export default function Dashboard() {
 
       </main>
 
-      {/* SUGGESTION / ACTION REVIEW MODAL ("Suggest, never act alone") */}
+      {/* =========================================================================
+          SUGGESTION / ACTION REVIEW MODAL ("SUGGEST, NEVER ACT ALONE")
+      ========================================================================== */}
       {activeSuggestion && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0E121B] border border-white/[0.12] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-5">
             <div className="flex items-start justify-between">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-                  Review &amp; Confirmation Modal
+                <span className="text-[10px] uppercase font-mono font-bold tracking-wider px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                  Confirmation Modal · Zero Automation
                 </span>
-                <h3 className="font-bold text-lg text-white mt-1">{activeSuggestion.title}</h3>
+                <h3 className="font-bold text-lg text-white mt-2">{activeSuggestion.title}</h3>
                 <p className="text-xs text-slate-400">{activeSuggestion.description}</p>
               </div>
               <button 
@@ -759,46 +877,48 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2">
-              <div className="text-xs text-slate-400 flex justify-between">
+            <div className="bg-black/50 p-4 rounded-2xl border border-white/[0.06] space-y-2.5">
+              <div className="text-xs text-slate-400 flex justify-between items-center">
                 <span>Target: <strong className="text-slate-200">{activeSuggestion.contactTarget}</strong></span>
-                <span className="uppercase text-[10px] font-mono font-bold text-indigo-400">{activeSuggestion.contactMethod}</span>
+                <span className="uppercase text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-white/[0.06] text-indigo-300">{activeSuggestion.contactMethod}</span>
               </div>
               <textarea 
                 rows={4}
                 value={draftMessage}
                 onChange={(e) => setDraftMessage(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 leading-relaxed font-sans"
+                className="w-full bg-[#0A0D14] border border-white/[0.08] rounded-xl p-3 text-xs text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 leading-relaxed font-sans"
               />
-              <p className="text-[11px] text-amber-400/90 italic flex items-center gap-1">
-                <AlertCircle className="h-3 w-3 shrink-0" />
-                You have full control. Edit the message above before taking action.
+              <p className="text-[11px] text-amber-400/90 italic flex items-center gap-1.5">
+                <AlertCircle className="h-3.5 w-3.5 shrink-0" />
+                You are in full control. Edit the draft before taking action.
               </p>
             </div>
 
             {actionSuccessMessage && (
-              <div className="p-2.5 bg-emerald-500/20 border border-emerald-500/30 rounded-lg text-emerald-300 text-xs font-semibold flex items-center gap-2">
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-300 text-xs font-medium flex items-center gap-2">
                 <CheckCircle className="h-4 w-4 shrink-0" />
                 <span>{actionSuccessMessage}</span>
               </div>
             )}
 
-            <div className="flex gap-2 justify-end pt-2">
+            <div className="flex gap-2.5 justify-end pt-2">
               <button 
                 onClick={() => {
                   navigator.clipboard.writeText(draftMessage);
-                  setActionSuccessMessage('Copied to clipboard! Ready to paste into phone or email.');
+                  setCopied(true);
+                  setActionSuccessMessage('Copied to clipboard! Ready to paste into WhatsApp, phone, or email.');
                 }}
-                className="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition"
+                className="px-4 py-2 bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-slate-200 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition"
               >
-                Copy Draft
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-400" /> : <Copy className="h-3.5 w-3.5" />}
+                <span>{copied ? 'Copied' : 'Copy Draft'}</span>
               </button>
               <button 
                 onClick={() => {
                   setActionSuccessMessage('Action approved and logged. Nothing dispatched without your manual send.');
                   setTimeout(() => setActiveSuggestion(null), 1500);
                 }}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition shadow"
+                className="px-5 py-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white rounded-xl text-xs font-bold transition shadow-md shadow-indigo-600/30"
               >
                 Confirm &amp; Proceed
               </button>
@@ -807,11 +927,13 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* CLIENT DOSSIER MODAL */}
+      {/* =========================================================================
+          CLIENT DOSSIER MODAL
+      ========================================================================== */}
       {selectedClient && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 shadow-2xl space-y-4 max-h-[85vh] overflow-y-auto">
-            <div className="flex items-start justify-between border-b border-slate-800 pb-3">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0E121B] border border-white/[0.12] rounded-3xl max-w-2xl w-full p-6 shadow-2xl space-y-5 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-start justify-between border-b border-white/[0.06] pb-4">
               <div>
                 <h3 className="font-bold text-xl text-white">{selectedClient.name}</h3>
                 <div className="text-xs text-slate-400 mt-1 flex flex-wrap gap-2">
@@ -828,12 +950,12 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="space-y-4 text-xs">
+            <div className="space-y-5 text-xs">
               <div>
-                <span className="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Historical Name Variants (Entity Resolution):</span>
-                <div className="flex flex-wrap gap-1.5 mt-1">
+                <span className="font-bold text-slate-400 uppercase tracking-wider text-[10px]">Historical Aliases &amp; Typos (Resolved):</span>
+                <div className="flex flex-wrap gap-1.5 mt-1.5">
                   {selectedClient.other_names_used_in_the_data.map((alias, i) => (
-                    <span key={i} className="px-2 py-0.5 bg-slate-800 border border-slate-700 rounded text-slate-300 font-mono">
+                    <span key={i} className="px-2.5 py-1 bg-white/[0.04] border border-white/[0.06] rounded-md text-slate-300 font-mono text-[11px]">
                       {alias}
                     </span>
                   ))}
@@ -841,15 +963,15 @@ export default function Dashboard() {
               </div>
 
               <div>
-                <span className="font-bold text-slate-300 uppercase tracking-wider text-[10px]">Client Status &amp; Financials:</span>
-                <div className="grid grid-cols-2 gap-2 mt-1">
-                  <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
-                    <span className="text-slate-500">Risk Assessment:</span>
+                <span className="font-bold text-slate-400 uppercase tracking-wider text-[10px]">Client Status &amp; Financials:</span>
+                <div className="grid grid-cols-2 gap-3 mt-1.5">
+                  <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.04]">
+                    <span className="text-slate-500">Churn Risk Level:</span>
                     <div className="font-bold text-sm text-white capitalize mt-0.5">{selectedClient.riskStatus}</div>
                   </div>
-                  <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800">
-                    <span className="text-slate-500">Documented Overdue:</span>
-                    <div className="font-bold text-sm text-amber-400 mt-0.5">
+                  <div className="p-3.5 rounded-xl bg-black/40 border border-white/[0.04]">
+                    <span className="text-slate-500">Overdue Balance:</span>
+                    <div className="font-bold text-sm text-amber-400 font-mono mt-0.5">
                       {overdueInvoices.find(o => o.client.toLowerCase().includes(selectedClient.name.toLowerCase())) 
                         ? `$${overdueInvoices.find(o => o.client.toLowerCase().includes(selectedClient.name.toLowerCase()))?.amount_owed}` 
                         : '$0.00'}
@@ -859,10 +981,10 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="flex justify-end pt-3 border-t border-slate-800">
+            <div className="flex justify-end pt-4 border-t border-white/[0.06]">
               <button 
                 onClick={() => setSelectedClient(null)}
-                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs font-semibold"
+                className="px-5 py-2 bg-white/[0.06] hover:bg-white/[0.1] text-white rounded-xl text-xs font-semibold"
               >
                 Close Dossier
               </button>
@@ -871,14 +993,16 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* UPLOAD MODAL ("Add new files") */}
+      {/* =========================================================================
+          UPLOAD MODAL ("ADD NEW FILES")
+      ========================================================================== */}
       {uploadModalOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#0E121B] border border-white/[0.12] rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-5">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="font-bold text-lg text-white">Add New Files</h3>
-                <p className="text-xs text-slate-400">Upload new CSV or TXT files to dynamically update all metrics.</p>
+                <h3 className="font-bold text-lg text-white">Add New Data Files</h3>
+                <p className="text-xs text-slate-400 mt-0.5">Drop new CSV or TXT files to dynamically recalculate all metrics.</p>
               </div>
               <button 
                 onClick={() => setUploadModalOpen(false)}
@@ -888,7 +1012,7 @@ export default function Dashboard() {
               </button>
             </div>
 
-            <div className="border-2 border-dashed border-slate-700 hover:border-indigo-500 rounded-xl p-6 text-center cursor-pointer transition bg-slate-950 relative">
+            <div className="border-2 border-dashed border-white/[0.1] hover:border-indigo-500/60 rounded-2xl p-8 text-center cursor-pointer transition bg-black/30 relative group">
               <input 
                 type="file" 
                 multiple 
@@ -896,13 +1020,13 @@ export default function Dashboard() {
                 onChange={handleFileUpload}
                 className="absolute inset-0 opacity-0 cursor-pointer"
               />
-              <Upload className="h-8 w-8 text-indigo-400 mx-auto mb-2" />
+              <Upload className="h-8 w-8 text-indigo-400 mx-auto mb-3 group-hover:scale-110 transition" />
               <div className="text-xs font-bold text-white">Drop bookings.csv, invoices.csv, leads.csv here</div>
-              <div className="text-[11px] text-slate-500 mt-1">or click to browse files from your computer</div>
+              <div className="text-[11px] text-slate-500 mt-1">or browse files from your computer</div>
             </div>
 
             {uploadStatus && (
-              <div className="text-xs font-medium text-indigo-300 bg-indigo-500/10 p-2.5 rounded-lg border border-indigo-500/20">
+              <div className="text-xs font-medium text-indigo-300 bg-indigo-500/10 p-3 rounded-xl border border-indigo-500/20">
                 {uploadStatus}
               </div>
             )}

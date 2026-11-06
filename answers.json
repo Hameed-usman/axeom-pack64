@@ -1,0 +1,538 @@
+{
+  "pack_id": 64,
+  "your_name": "Usman Hameed",
+  "your_email": "usman.hameed1145@gmail.com",
+
+  "live_link": "https://axeom-pack64.vercel.app",
+  "video_link": "",
+  "code_or_files_link": "https://github.com/Hameed-usman/axeom-pack64",
+
+  "client_count": 29,
+  "clients": [
+    {
+      "name": "NorthPoint Church",
+      "other_names_used_in_the_data": [
+        "NorthPoint Media Team",
+        "NorthPoint DFW",
+        "Northpoint Church",
+        "NORTHPOINT CHURCH",
+        "PASTOR DAVID KIM"
+      ],
+      "emails": ["media@northpointdfw.org"],
+      "phones": ["972-555-0112"]
+    },
+    {
+      "name": "Khan Dental PLLC",
+      "other_names_used_in_the_data": [
+        "Dr. Sarah Khan",
+        "Sarah Khan DDS",
+        "Dr Khan",
+        "Khan Dental",
+        "Sarah Khan",
+        "DR. SARAH KHAN",
+        "KHAN DENTAL"
+      ],
+      "emails": ["sarah@khandental.com", "sarah@khandental.con"],
+      "phones": ["214-555-0141", "214-555-0177"]
+    },
+    {
+      "name": "Hustle & Heart",
+      "other_names_used_in_the_data": [
+        "H&H Podcast",
+        "Hustle & Heart Podcast",
+        "Hustle and Heart",
+        "Tasha Green",
+        "TASHA GREEN"
+      ],
+      "emails": ["tasha@hustleandheart.fm", "tasha.green.mail@gmail.com"],
+      "phones": ["469-555-0157"]
+    },
+    {
+      "name": "DFW Founders Podcast",
+      "other_names_used_in_the_data": [
+        "DFW Founders",
+        "Ethan Cole",
+        "DFW FOUNDERS",
+        "ETHAN COLE"
+      ],
+      "emails": ["ethan@dfwfounders.fm"],
+      "phones": ["214-555-0118"]
+    },
+    {
+      "name": "Cedar & Stone",
+      "other_names_used_in_the_data": ["Cedar and Stone"],
+      "emails": ["will@cedarstone.build"],
+      "phones": ["817-555-0122"]
+    },
+    {
+      "name": "Bloom Med Spa",
+      "other_names_used_in_the_data": [
+        "Bloom Med Spa - Plano",
+        "Bloom Med Spa - Frisco",
+        "Bloom Medspa",
+        "Bloom",
+        "BLOOM MEDSPA",
+        "BLOOM MED SPA",
+        "BLOOM MED SPA - PLANO",
+        "PRIYA SHAH",
+        "Bloom Med Spa Frisco"
+      ],
+      "emails": ["priya@bloommedspa.com", "frisco@bloommedspa.com"],
+      "phones": ["972-555-0110"]
+    },
+    {
+      "name": "Mike's Roofing",
+      "other_names_used_in_the_data": [
+        "Mikes Roofing",
+        "Mike Delgado",
+        "Mike's Roofing LLC",
+        "MIKE DELGADO",
+        "MIKE'S ROOFING LLC"
+      ],
+      "emails": ["mike@mikesroofingtx.com"],
+      "phones": ["469-555-0172"]
+    },
+    {
+      "name": "Luna Bridal Boutique",
+      "other_names_used_in_the_data": ["Luna Bridal", "Sofia Ramirez"],
+      "emails": ["sofia@lunabridal.com"],
+      "phones": ["214-555-0135"]
+    },
+    {
+      "name": "Meridian Wealth Partners",
+      "other_names_used_in_the_data": [
+        "Meridian Wealth",
+        "Meridian WP",
+        "PAUL GRANT",
+        "Paul Grant"
+      ],
+      "emails": ["pgrant@meridianwp.com"],
+      "phones": ["214-555-0182"]
+    },
+    {
+      "name": "Elevate Athletics",
+      "other_names_used_in_the_data": [
+        "Elevate Fitness",
+        "Elevate Fit",
+        "Elevate",
+        "JORDAN REED",
+        "J REED",
+        "Jordan Reed"
+      ],
+      "emails": ["jordan@elevatefit.co", "jordan@elevateathletics.com"],
+      "phones": ["469-555-0133"]
+    },
+    {
+      "name": "Apex Physical Therapy",
+      "other_names_used_in_the_data": [
+        "Apex PT Dallas",
+        "Apex PT",
+        "DR. KIM LEE",
+        "APEX PT",
+        "APEX PHYSICAL THERAPY"
+      ],
+      "emails": ["klee@apexptdallas.com"],
+      "phones": ["972-555-0144"]
+    },
+    {
+      "name": "Torres Law Firm PLLC",
+      "other_names_used_in_the_data": [
+        "Torres Law",
+        "Torres",
+        "Torres Law Firm",
+        "TORRES LAW FIRM PLLC",
+        "MIKE TORRES"
+      ],
+      "emails": ["mtorres@torreslaw.com"],
+      "phones": ["214-555-0188"]
+    },
+    {
+      "name": "Glow Aesthetics",
+      "other_names_used_in_the_data": [
+        "Glow Aesthetic",
+        "Glow Med",
+        "GLOW AESTHETICS",
+        "NADIA HASSAN",
+        "Nadia Hassan"
+      ],
+      "emails": ["nadia@glowaesthetics.co"],
+      "phones": ["972-555-0153"]
+    },
+    {
+      "name": "Crown Barbershop",
+      "other_names_used_in_the_data": [
+        "Crown Barbers",
+        "Andre Jackson",
+        "ANDRE JACKSON"
+      ],
+      "emails": ["andre@crownbarbers.com"],
+      "phones": ["214-555-0103"]
+    },
+    {
+      "name": "Patel Insurance Group",
+      "other_names_used_in_the_data": [
+        "Patel Insurance",
+        "Patel Ins",
+        "Raj Patel",
+        "PATEL INSURANCE GROUP",
+        "Nina Patel"
+      ],
+      "emails": ["raj@patelinsures.com", "nina@patelinsures.com"],
+      "phones": ["214-555-0195", "214-555-0196"]
+    },
+    {
+      "name": "Lone Star Realty LLC",
+      "other_names_used_in_the_data": [
+        "Lone Star Realty",
+        "Dana Brooks",
+        "DANA BROOKS"
+      ],
+      "emails": ["dana@lonestarrealty.com"],
+      "phones": ["214-555-0164"]
+    },
+    {
+      "name": "Oak Lane Dental",
+      "other_names_used_in_the_data": [
+        "Oaklane Dental",
+        "Hannah Brooks DDS",
+        "DR. HANNAH BROOKS",
+        "HANNAH BROOKS DDS"
+      ],
+      "emails": ["hbrooks@oaklanedental.com"],
+      "phones": ["469-555-0108"]
+    },
+    {
+      "name": "Khan Family Law",
+      "other_names_used_in_the_data": ["Khan Law", "Aisha Khan"],
+      "emails": ["info@khanfamilylaw.com"],
+      "phones": ["214-555-0150"]
+    },
+    {
+      "name": "The Brew Lab",
+      "other_names_used_in_the_data": ["Brew Lab", "Brewlab Coffee", "LENA ORTIZ"],
+      "emails": ["lena@thebrewlab.coffee"],
+      "phones": ["469-555-0116"]
+    },
+    {
+      "name": "Greenway Pediatrics",
+      "other_names_used_in_the_data": [
+        "Greenway Peds",
+        "Brightline - Greenway"
+      ],
+      "emails": ["acho@greenwaypeds.com"],
+      "phones": ["972-555-0129"]
+    },
+    {
+      "name": "Summit Chiropractic",
+      "other_names_used_in_the_data": [
+        "Summit Chiro",
+        "Brightline - Summit"
+      ],
+      "emails": ["drhale@summitchiro.com"],
+      "phones": ["972-555-0148"]
+    },
+    {
+      "name": "Ironclad Gym",
+      "other_names_used_in_the_data": [
+        "Ironclad Fitness",
+        "Marcus Webb",
+        "IRONCLAD GYM"
+      ],
+      "emails": ["marcus@ironcladgym.com"],
+      "phones": ["469-555-0126"]
+    },
+    {
+      "name": "Sage Family Therapy",
+      "other_names_used_in_the_data": ["Sage Therapy", "Dr. Maria Lopez"],
+      "emails": ["mlopez@sagefamilytherapy.com"],
+      "phones": ["972-555-0171"]
+    },
+    {
+      "name": "Harbor Coffee Roasters",
+      "other_names_used_in_the_data": [
+        "Harbor Coffee",
+        "Harbor Roasters"
+      ],
+      "emails": ["jen@harborcoffee.com"],
+      "phones": ["469-555-0149"]
+    },
+    {
+      "name": "Khan's Auto Spa",
+      "other_names_used_in_the_data": [
+        "Khans Auto",
+        "Imran Khan",
+        "IMRAN KHAN"
+      ],
+      "emails": ["imran@khansautospa.com"],
+      "phones": ["972-555-0161"]
+    },
+    {
+      "name": "Lonestar Realty Group",
+      "other_names_used_in_the_data": ["Lonestar Realty"],
+      "emails": ["greg@lonestarrg.com"],
+      "phones": ["817-555-0119"]
+    },
+    {
+      "name": "Prime Roofing Co",
+      "other_names_used_in_the_data": ["Prime Roofing", "Tony Russo", "TONY RUSSO"],
+      "emails": ["tony@primeroofingco.com"],
+      "phones": ["817-555-0131"]
+    },
+    {
+      "name": "TLC Homecare",
+      "other_names_used_in_the_data": ["TLC Home Care", "Angela Price"],
+      "emails": ["angela@tlchomecare.com"],
+      "phones": ["214-555-0187"]
+    },
+    {
+      "name": "Vega Auto Detailing",
+      "other_names_used_in_the_data": [
+        "Vega Auto",
+        "Carlos Vega",
+        "Vega Detailing",
+        "CARLOS VEGA"
+      ],
+      "emails": ["carlos.vega.detail@gmail.com"],
+      "phones": ["469-555-0190"]
+    }
+  ],
+  "payers_who_are_not_clients": [
+    {
+      "name": "Brightline Marketing",
+      "pays_for": ["Greenway Pediatrics", "Summit Chiropractic"]
+    }
+  ],
+
+  "overdue": [
+    { "client": "Hustle & Heart", "invoice": "INV-1101", "amount_owed": 300, "days_late": 45 },
+    { "client": "Hustle & Heart", "invoice": "INV-1104", "amount_owed": 300, "days_late": 41 },
+    { "client": "Lonestar Realty Group", "invoice": "INV-1106", "amount_owed": 1500, "days_late": 39 },
+    { "client": "Hustle & Heart", "invoice": "INV-1110", "amount_owed": 300, "days_late": 34 },
+    { "client": "Hustle & Heart", "invoice": "INV-1113", "amount_owed": 300, "days_late": 28 },
+    { "client": "Prime Roofing Co", "invoice": "INV-1121", "amount_owed": 450, "days_late": 21 },
+    { "client": "TLC Homecare", "invoice": "INV-1122", "amount_owed": 1500, "days_late": 21 },
+    { "client": "Patel Insurance Group", "invoice": "INV-1124", "amount_owed": 2500, "days_late": 21 },
+    { "client": "Mike's Roofing", "invoice": "INV-1127", "amount_owed": 900, "days_late": 15 },
+    { "client": "Brightline Marketing", "invoice": "INV-1128", "amount_owed": 900, "days_late": 15 },
+    { "client": "Hustle & Heart", "invoice": "INV-1130", "amount_owed": 300, "days_late": 14 }
+  ],
+  "overdue_total": 9250,
+
+  "we_owe": [
+    {
+      "client": "Glow Aesthetics",
+      "amount": 900,
+      "why": "Invoice INV-1088 ($900.00) was paid twice in error: once via Zelle (P5084, $900 on 2026-07-30) and once via Card (P5086, $900 on 2026-07-31), totaling $1,800 received for a $900 bill."
+    }
+  ],
+
+  "never_billed": [
+    { "client": "Hustle & Heart", "booking_id_or_month": "B126", "amount": 300 },
+    { "client": "Ironclad Gym", "booking_id_or_month": "B130", "amount": 900 },
+    { "client": "Hustle & Heart", "booking_id_or_month": "B143", "amount": 300 },
+    { "client": "DFW Founders Podcast", "booking_id_or_month": "B145", "amount": 550 },
+    { "client": "Vega Auto Detailing", "booking_id_or_month": "B146", "amount": 1500 },
+    { "client": "Torres Law Firm PLLC", "booking_id_or_month": "May 2026 Retainer", "amount": 2500 },
+    { "client": "Patel Insurance Group", "booking_id_or_month": "May 2026 Retainer", "amount": 2500 },
+    { "client": "Apex Physical Therapy", "booking_id_or_month": "May 2026 Retainer", "amount": 2500 },
+    { "client": "Apex Physical Therapy", "booking_id_or_month": "September 2026 Retainer", "amount": 2500 }
+  ],
+  "never_billed_total": 13550,
+
+  "billing_tool_is_wrong": [
+    {
+      "invoice": "INV-1116",
+      "tool_says": "Status is unpaid for $900.00",
+      "truth": "Paid in full ($900.00)",
+      "how_you_know": "Payment P5105 on 2026-08-28 was received from Harbor Roasters (jen@harborcoffee.com) for $900.00 explicitly referencing INV-1116."
+    },
+    {
+      "invoice": "INV-1103",
+      "tool_says": "Status is unpaid for $900.00",
+      "truth": "Paid in full ($900.00)",
+      "how_you_know": "Payment P5118 on 2026-09-13 was received from Mike's Roofing for $900.00 explicitly referencing INV-1103."
+    },
+    {
+      "invoice": "INV-1093",
+      "tool_says": "Amount billed: $2,000.00 for August Retainer",
+      "truth": "Should be $2,500.00 (underbilled by $500.00)",
+      "how_you_know": "Apex Physical Therapy retainer shoots (B023, B046, B074, B105, B137) are contracted at $2,500/month (INV-1037, INV-1064, and INV-1146 are all $2,500). No rate reduction or discount was authorized."
+    },
+    {
+      "invoice": "INV-1072",
+      "tool_says": "Issued 2026-07-10 for booking B082 Content Day",
+      "truth": "Issued 5 days prior to the shoot date (07/15/2026)",
+      "how_you_know": "Booking B082 was scheduled and completed on 2026-07-15, but invoice INV-1072 was generated prematurely on 2026-07-10."
+    },
+    {
+      "invoice": "INV-1017",
+      "tool_says": "Billed to Hustle & Heart Podcast (tasha@hustleandheart.fm)",
+      "truth": "Booking B017 was a personal booking for Tasha Green (tasha.green.mail@gmail.com)",
+      "how_you_know": "B017 was booked with Tasha's personal email, but the billing tool routed the invoice to the business account."
+    }
+  ],
+
+  "lost_requests": [
+    {
+      "video_id": "V002",
+      "request_date": "2026-04-10",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note request to add phone number at end of video was never logged into the production board notes, leading client to follow up angrily on 04/15 ('second time I ask')."
+    },
+    {
+      "video_id": "V019",
+      "request_date": "2026-04-30",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note from Paul Grant asking to add phone number was dropped; Paul followed up on 05/05 asking if anyone saw his message."
+    },
+    {
+      "video_id": "V020",
+      "request_date": "2026-05-04",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note asking for 'walk-ins welcome' was not transcribed or added to the board; Paul followed up on 05/10 stating he was frustrated."
+    },
+    {
+      "video_id": "V060",
+      "request_date": "2026-05-31",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note from Raj Patel requesting larger captions was missed in audio messages; Raj followed up on 06/08."
+    },
+    {
+      "video_id": "V017",
+      "request_date": "2026-05-02",
+      "came_by": "email",
+      "why_it_was_lost": "Client requested in Spanish to remove price discussion. Board note was logged as 'Remove prices part' with 0 revisions executed; client had to follow up repeatedly via WhatsApp on 06/03 and 09/02 ('owner story sigue igual')."
+    },
+    {
+      "video_id": "V117",
+      "request_date": "2026-06-25",
+      "came_by": "instagram",
+      "why_it_was_lost": "Revision request arrived via Instagram DM from @glowaestheticsdfw; social media DMs are not connected to production tracking, prompting Nadia to message on WhatsApp on 07/01."
+    },
+    {
+      "video_id": "V175",
+      "request_date": "2026-07-26",
+      "came_by": "instagram",
+      "why_it_was_lost": "Instagram DM from Imran Khan to remove stumble was lost in inbox silo; client emailed on 08/04 stating it was his second time asking."
+    },
+    {
+      "video_id": "V181",
+      "request_date": "2026-07-29",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note from Sarah Khan to add 'walk-ins welcome' was dropped without logging; Sarah followed up on WhatsApp on 08/03."
+    },
+    {
+      "video_id": "V193",
+      "request_date": "2026-08-10",
+      "came_by": "email",
+      "why_it_was_lost": "Email complaint regarding loud music on bean origin story was missed during editor transition; Lena Ortiz followed up on 08/18 ('A little frustrated honestly')."
+    },
+    {
+      "video_id": "V198",
+      "request_date": "2026-08-13",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note from Ben asking for 'walk-ins welcome' on flu shot video was never assigned; Dr. Hale emailed on 08/18 frustrated that it was not fixed."
+    },
+    {
+      "video_id": "V152",
+      "request_date": "2026-08-16",
+      "came_by": "whatsapp",
+      "why_it_was_lost": "WhatsApp request from Mike Delgado to trim the first 3 seconds was not transferred to the editor; Mike emailed on 08/24 noting it was not fixed."
+    },
+    {
+      "video_id": "V236",
+      "request_date": "2026-09-02",
+      "came_by": "email",
+      "why_it_was_lost": "Email branding instruction to use navy color on class schedule was overlooked; Jordan messaged on 09/08 noting the exact same issue persisted."
+    },
+    {
+      "video_id": "V238",
+      "request_date": "2026-09-02",
+      "came_by": "email",
+      "why_it_was_lost": "Client reported name misspelling in caption; fix was not prioritized and client followed up on WhatsApp on 09/11 ('second time I ask')."
+    },
+    {
+      "video_id": "V254",
+      "request_date": "2026-09-05",
+      "came_by": "whatsapp",
+      "why_it_was_lost": "WhatsApp compliance request to blur client face due to missing release form was ignored; Carlos emailed on 09/14 stating problem still existed."
+    },
+    {
+      "video_id": "V275",
+      "request_date": "2026-09-10",
+      "came_by": "voice note",
+      "why_it_was_lost": "Voice note to add 'walk-ins welcome' was dropped; Raj followed up on WhatsApp on 09/15 complaining it was still wrong."
+    },
+    {
+      "video_id": "V259",
+      "request_date": "2026-09-09",
+      "came_by": "voice note",
+      "why_it_was_lost": "Tony Russo voice note regarding loud audio was lost; Tony messaged on 09/15 ('second time I ask. shingle vs metal is still wrong')."
+    },
+    {
+      "video_id": "V266",
+      "request_date": "2026-09-21",
+      "came_by": "whatsapp",
+      "why_it_was_lost": "WhatsApp revision sent to newly onboarded freelance editor Dev was not completed properly, leading Marcus to complain on 09/21."
+    },
+    {
+      "video_id": "V308",
+      "request_date": "2026-10-01",
+      "came_by": "email",
+      "why_it_was_lost": "Prior revision request on Tesla detail video was lost between editor handoffs, prompting Carlos to follow up on 10/01 in Spanish."
+    }
+  ],
+  "lost_requests_root_causes": [
+    "Omnichannel fragmentation without unified triage: revision requests arrive across 5 separate channels (Voice Notes, WhatsApp, Email, Instagram DMs, Website Forms) with no central inbox or ticketing system.",
+    "Voice notes and Instagram DMs are black holes: voice notes require manual transcription and listening, while Instagram DMs exist in a separate mobile app not monitored by editors.",
+    "Non-English feedback neglected: Spanish messages from Sofia Ramirez and Carlos Vega were repeatedly overlooked or delayed.",
+    "Editor scaling & handoff breakdowns: onboarding Sam in July ($22/hr) and freelance editor Dev in September ($40/hr) coincided with massive spike in missed revisions due to lack of a centralized revision QA pipeline."
+  ],
+  "lost_requests_started_getting_worse_in": "2026-08",
+
+  "never_replied_leads": [
+    "L008",
+    "L020",
+    "L032",
+    "L045",
+    "L066",
+    "L072",
+    "L080",
+    "L087",
+    "L089",
+    "L092",
+    "L094",
+    "L097",
+    "L098",
+    "L099"
+  ],
+
+  "most_likely_to_leave": {
+    "client": "Patel Insurance Group",
+    "evidence": [
+      "Crucial legal compliance request on 2026-09-02 (voice note from Raj asking to always use full legal entity name 'Patel Insurance Group') was completely ignored by editors, prompting Raj to email angrily on 09-08: 'The videos say Patel Insurance again. I asked for the full name. Not happy.'",
+      "Multiple recurring lost revision requests across videos V060, V061, V275, and V277 over several months.",
+      "Contract cancellation escalation: Nina Patel submitted a website form inquiry on 2026-09-30 stating 'We would like to talk about our contract and whether we continue' (L097), followed by an urgent email on 2026-10-02 ('Following up. We need to talk about the contract this week.') — both went completely unanswered.",
+      "Payment freeze: both September retainer (INV-1124, $2,500) and October retainer (INV-1145, $2,500) remain unpaid, demonstrating direct churn intent."
+    ],
+    "what_to_do_this_week": "Owner must personally call Nina Patel (214-555-0196) and Raj Patel (214-555-0195) before 10:00 AM on Monday, October 6. Directly apologize for the missed communication and compliance failure regarding their legal name. Offer an immediate dedicated 48-hour revision sprint to fix all branding across their entire video library, assign senior editor Rita exclusively to their account, and offer a $1,000 goodwill credit on their outstanding September invoice to secure their annual contract renewal ($30,000/yr value)."
+  },
+
+  "best_marketing_channel": {
+    "channel": "Referral",
+    "why": "Referrals achieved an extraordinary 85.7% close rate (6 won out of 7 leads: Khan Dental, Lone Star Realty, Oak Lane Dental, Brightline Marketing, Harbor Coffee, and Hustle & Heart) generating over $32,400 in direct revenue with $0 customer acquisition cost (CAC). Referral clients also exhibit the highest lifetime value (LTV) and multi-booking retention (e.g., Sarah Khan booking 7 Content Days, Kelsey booking agency bundles)."
+  },
+
+  "what_this_data_cannot_tell_us": [
+    "Customer Acquisition Cost (CAC) and marketing spend: The dataset tracks lead sources but contains zero marketing expense data for Google Ads, Meta Ads, or LinkedIn campaigns, making true ROI calculation impossible.",
+    "Lead-to-booking sales cycle and touchpoints: Multi-touch attribution is absent; leads may have viewed Instagram content or Meta ads before submitting a website form or calling.",
+    "Gross margins per service type: While editor hourly pay is recorded, equipment depreciation, studio utility overhead, and client acquisition time are missing to determine true net profitability per tier.",
+    "Customer sentiment and NPS: Beyond qualitative frustration expressed in messages.txt, there is no standardized feedback mechanism to measure client satisfaction prior to churn."
+  ],
+
+  "monday_top_3": [
+    "Call Nina & Raj Patel immediately (Patel Insurance Group, 214-555-0196) to halt impending contract cancellation of their $2,500/month retainer, apologize for unaddressed compliance requests, and commit to immediate fixes.",
+    "Execute an Emergency Morning Revision Sweep with editors Ali, Rita, Sam, and Dev to resolve all 7 active 'second time I ask' client blockers (Patel compliance name, Carlos Vega Tesla detail, Torres Law consult edit, Sarah Khan kids tips) before noon.",
+    "Implement an immediate single-inbox protocol: mandate all WhatsApp, voice note, and Instagram requests be funneled into a central production queue, and contact overdue accounts TLC Homecare ($1,500) and Lonestar Realty Group ($1,500) for payment collection."
+  ]
+}
